@@ -8,7 +8,8 @@ public class App {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Calculator calculator = new Calculator();
+        ArithmeticCalculator calculator = new ArithmeticCalculator();
+
 
         String answer = ""; // do-while 문 안에 선언 시 while에서 변수 인식 못함
         do {
