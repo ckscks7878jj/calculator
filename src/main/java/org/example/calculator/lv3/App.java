@@ -10,8 +10,7 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         ArithmeticCalculator calculator = new ArithmeticCalculator();
 
-
-        String answer = ""; // do-while 문 안에 선언 시 while에서 변수 인식 못함
+        String answer = ""; // do-while문 안에 선언 시 while에서 변수 인식 불가
         do {
 
             // 첫 번째 숫자
@@ -20,7 +19,7 @@ public class App {
             // 두 번째 숫자
             int num2 = calculator.isValid(scanner, "두 번째");
 
-            // 사칙연산
+            // 연산자 입력
             System.out.print("사칙연산 기호를 입력하세요: ");
             char operator = scanner.next().charAt(0);
 
