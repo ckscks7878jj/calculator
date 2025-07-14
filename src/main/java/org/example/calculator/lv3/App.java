@@ -14,19 +14,25 @@ public class App {
         do {
 
             // 첫 번째 숫자
-            int num1 = calculator.isValid(scanner, "첫 번째");
+            double num1 = calculator.isValid(scanner, "첫 번째");
 
             // 두 번째 숫자
-            int num2 = calculator.isValid(scanner, "두 번째");
+            double num2 = calculator.isValid(scanner, "두 번째");
 
             // 연산자 입력
             System.out.print("사칙연산 기호를 입력하세요: ");
             char operator = scanner.next().charAt(0);
 
             // 계산 및 기록
-            int result = calculator.calculate(num1, num2, operator);
+            double result = calculator.calculate(num1, num2, operator);
             System.out.println("결과: " + result);
             System.out.println("결과 목록: " + calculator.getResults()); // 게터 활용
+
+            // 입력값 보다 큰 결과값들 출력 (Stream 활용)
+            List<Double> filtered = calculator.getResults().stream()
+                    .filter(num -> num > Math.max(num1, num2)) // Math.max 두 숫자 중 큰 값
+                    .toList();
+            System.out.println("입력값 보다 큰 결과값들만 출력됩니다.: " + filtered);
 
             // 기록된 값 삭제 기능
             System.out.print("결과 목록의 첫 번째 값을 삭제하시겠습니까? (Y/N): "); // lv3에선 원하는 값을 삭제할 수 있게
@@ -40,7 +46,7 @@ public class App {
             System.out.print("결과 목록을 초기화 하시겠습니까? (Y/N): ");
             String reset = scanner.next();
             if (reset.equalsIgnoreCase("Y")) {
-                List<Integer> newResults = new ArrayList<>();
+                List<Double> newResults = new ArrayList<>();
                 calculator.setResults(newResults); // 세터 활용
                 System.out.println("목록이 초기화 되었습니다.");
             }
