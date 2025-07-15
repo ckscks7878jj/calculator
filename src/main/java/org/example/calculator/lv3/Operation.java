@@ -2,7 +2,7 @@ package org.example.calculator.lv3;
 
 public enum Operation { // 연산자 관리 및 연산 수행
 
-    PLUS('+', (a, b) -> a + b), // 람다식을 활용했더니 엄청나게 간결해졌다...
+    PLUS('+', (a, b) -> a + b),
     MINUS('-', (a, b) -> a - b),
     MULTIPLY('*', (a, b) -> a * b),
     DIVIDE('/', (a, b) -> {
@@ -12,10 +12,10 @@ public enum Operation { // 연산자 관리 및 연산 수행
             return a / b;
     });
 
-    private final char operator; // 속성
+    private final char operator;
     private final Calculator cal;
 
-    Operation(char operator, Calculator cal) { // 생성자
+    Operation(char operator, Calculator cal) {
         this.operator = operator;
         this.cal = cal;
     }

@@ -10,7 +10,7 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         ArithmeticCalculator calculator = new ArithmeticCalculator();
 
-        String answer = ""; // do-while문 안에 선언 시 while에서 변수 인식 불가
+        String answer = "";
         do {
 
             // 첫 번째 숫자
@@ -25,35 +25,42 @@ public class App {
 
             // 계산 및 기록
             double result = calculator.calculate(num1, num2, operator);
-            System.out.println("결과: " + result);
-            System.out.println("결과 목록: " + calculator.getResults()); // 게터 활용
+            if (result == (int) result) {
+                System.out.println("결과: " + (int) result);
+            } else {
+                System.out.println("결과: " + result);
+            }
+            System.out.println("결과 목록: " + calculator.getResults());
 
             // 입력값 보다 큰 결과값들 출력 (Stream 활용)
             List<Double> filtered = calculator.getResults().stream()
-                    .filter(num -> num > Math.max(num1, num2)) // Math.max 두 숫자 중 큰 값
+                    .map(Number::doubleValue) // Number → double로 바꿔준다.
+                    .filter(num -> num > Math.max(num1, num2))
                     .toList();
             System.out.println("입력값 보다 큰 결과값들만 출력됩니다.: " + filtered);
 
-            // 기록된 값 삭제 기능
-            System.out.print("결과 목록의 첫 번째 값을 삭제하시겠습니까? (Y/N): "); // lv3에선 원하는 값을 삭제할 수 있게
-            String delNumber = scanner.next();
-            if (delNumber.equalsIgnoreCase("Y")) {
-                calculator.removeResult();
-                System.out.println("결과 목록: " + calculator.getResults()); // 삭제 후 결과 출력
+            // 연산 결과 삭제 기능
+            System.out.print("결과 목록에서 값을 삭제하시겠습니까? (Y/N): ");
+            String delete = scanner.next();
+            if (delete.equalsIgnoreCase("Y")) {
+                System.out.print("삭제하고 결과의 위치를 입력해주세요.(0부터 시작합니다.): ");
+                int delNum = scanner.nextInt();
+                calculator.removeResult(delNum);
             }
+            System.out.println("삭제되었습니다. 현재 목록: " + calculator.getResults()); // 삭제 후 결과 출력
 
             // 결과 목록 초기화 기능
             System.out.print("결과 목록을 초기화 하시겠습니까? (Y/N): ");
             String reset = scanner.next();
             if (reset.equalsIgnoreCase("Y")) {
-                List<Double> newResults = new ArrayList<>();
-                calculator.setResults(newResults); // 세터 활용
+                List<Number> newResults = new ArrayList<>();
+                calculator.setResults(newResults);
                 System.out.println("목록이 초기화 되었습니다.");
             }
 
             // 추가 계산 유무
             System.out.println("더 계산하려면 아무거나 입력하세요. exit 입력 시 종료됩니다.");
             answer = scanner.next();
-        } while (!answer.equalsIgnoreCase("exit")); // 대소문자 무시
+        } while (!answer.equalsIgnoreCase("exit"));
     }
 }
