@@ -2,6 +2,7 @@ package org.example.calculator.lv3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class App {
@@ -10,8 +11,7 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         ArithmeticCalculator calculator = new ArithmeticCalculator();
 
-        String answer = "";
-        do {
+        while (true) {
 
             // 첫 번째 숫자
             double num1 = calculator.isValid(scanner, "첫 번째");
@@ -24,7 +24,11 @@ public class App {
             char operator = scanner.next().charAt(0);
 
             // 계산 및 기록
-            double result = calculator.calculate(num1, num2, operator);
+            Optional<Double> optionalResult = calculator.calculate(num1, num2, operator);
+            if (optionalResult.isEmpty()) {
+                continue;
+            }
+            double result = optionalResult.get();
             if (result == (int) result) {
                 System.out.println("결과: " + (int) result);
             } else {
@@ -42,25 +46,29 @@ public class App {
             // 연산 결과 삭제 기능
             System.out.print("결과 목록에서 값을 삭제하시겠습니까? (Y/N): ");
             String delete = scanner.next();
-            if (delete.equalsIgnoreCase("Y")) {
-                System.out.print("삭제하고 결과의 위치를 입력해주세요.(0부터 시작합니다.): ");
+            if ("Y".equalsIgnoreCase(delete)) {
+                System.out.print("삭제하고 싶은 결과의 위치를 입력해주세요.(0부터 시작합니다.): ");
                 int delNum = scanner.nextInt();
                 calculator.removeResult(delNum);
             }
-            System.out.println("삭제되었습니다. 현재 목록: " + calculator.getResults()); // 삭제 후 결과 출력
 
             // 결과 목록 초기화 기능
-            System.out.print("결과 목록을 초기화 하시겠습니까? (Y/N): ");
-            String reset = scanner.next();
-            if (reset.equalsIgnoreCase("Y")) {
-                List<Number> newResults = new ArrayList<>();
-                calculator.setResults(newResults);
-                System.out.println("목록이 초기화 되었습니다.");
+            if (!"Y".equalsIgnoreCase(delete)) { // 결과를 삭제하지 않았을 때만 초기화 유무 확인
+                System.out.print("결과 목록을 초기화 하시겠습니까? (Y/N): ");
+                String reset = scanner.next();
+                if ("Y".equalsIgnoreCase(reset)) {
+                    List<Number> newResults = new ArrayList<>();
+                    calculator.setResults(newResults);
+                    System.out.println("목록이 초기화 되었습니다.");
+                }
             }
 
             // 추가 계산 유무
             System.out.println("더 계산하려면 아무거나 입력하세요. exit 입력 시 종료됩니다.");
-            answer = scanner.next();
-        } while (!answer.equalsIgnoreCase("exit"));
+            String exit = scanner.next();
+            if ("exit".equalsIgnoreCase(exit)) {
+                break;
+            }
+        }
     }
 }
